@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>kami & max</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .image-box {
+      position: relative;
+      padding: 40px 50px;
+      background: #111;
+      border-radius: 25px;
+      box-shadow: 0 0 40px rgba(255,255,255,0.05);
+      color: #e6e6e6;
+      font-size: 22px;
+      text-align: center;
+      z-index: 2;
+      animation: appear 1s ease;
+    }
+
+    @keyframes appear {
+      from { 
+        opacity: 0; 
+        transform: scale(0.8); 
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1); 
+      }
+    }
+
+    .heart {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #2b2b2b;
+      transform: rotate(45deg);
+      opacity: 0.8;
+      pointer-events: none;
+      will-change: transform, opacity; /* Оптимизация анимации */
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #2b2b2b;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -8px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -8px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(45deg);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-120vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-box">
+    макс — любитель лизать пяточки ками 🖤
+  </div>
+
+  <script>
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      
+      // Случайная позиция по горизонтали
+      const leftPos = Math.random() * 100;
+      heart.style.left = `${leftPos}vw`;
+      
+      // Случайная продолжительность анимации
+      const duration = 4 + Math.random() * 4;
+      heart.style.animation = `float ${duration}s linear forwards`;
+      
+      document.body.appendChild(heart);
+      
+      // Удаляем после завершения анимации
+      heart.addEventListener('animationend', () => {
+        heart.remove();
+      });
+    }
+
+    // Запускаем создание сердечек
+    const heartInterval = setInterval(createHeart, 400);
+    
+    // Очистка при разгрузке страницы
+    window.addEventListener('beforeunload', () => {
+      clearInterval(heartInterval);
+    });
+    
+    // Создаем несколько сердечек сразу для красоты
+    for(let i = 0; i < 10; i++) {
+      setTimeout(createHeart, i * 100);
+    }
+  </script>
+
+</body>
+</html>
